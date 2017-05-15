@@ -59,7 +59,7 @@ public class LoginTest
             if(!driver.findElement(By.cssSelector(".downloadBtn")).isDisplayed())
                 System.out.println("Download Button is not present");
 
-            //TakeScreenshot.takeScreenshot(driver,'src');
+            TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
 
 
 
