@@ -1,5 +1,6 @@
 package com.gap.atpractice.testSuites;
 import com.gap.atpractice.Utils.TakeScreenshot;
+import com.gap.atpractice.pageobject.HomePage;
 import com.gap.atpractice.selenium.SeleniumBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -27,17 +28,27 @@ public class LoginTest
 
         try
         {
+            HomePage hPage = new HomePage(driver);
+
+            hPage.gotoHomePage("http://www.solarwinds.com/");
+            if(!hPage.isPageLoaded("IT Management Software & Monitoring Tools | SolarWinds"))
+            {
+                System.out.println("HomePage Not Correctly Loaded");
+                //System.exit(0);
+            }
+            hPage.searchText("network");
 
 
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+            /*driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.get("http://www.solarwinds.com/");
-            searchButton = driver.findElement(By.xpath("//button[@id=\"SubmitButton\"]"));
+            searchButton = driver.findElement(By.xpath("//button[@class='btn btn-warning btn-sm']"));
             searchText = driver.findElement(By.id("SearchText"));
             Thread.sleep(5000);  // Let the user actually see something!
             searchText.sendKeys("network");
             searchButton.click();
             Thread.sleep(5000);  // Let the user actually see something!
-
+            */
 
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -59,7 +70,7 @@ public class LoginTest
             if(!driver.findElement(By.cssSelector(".downloadBtn")).isDisplayed())
                 System.out.println("Download Button is not present");
 
-            TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
+            //TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
 
 
 
@@ -67,7 +78,7 @@ public class LoginTest
 
 
         }
-        catch (InterruptedException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }

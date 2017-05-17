@@ -35,7 +35,7 @@ public class SeleniumBase
 
     private void initChrome()
     {
-        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //DesiredCapabilities capa = new DesiredCapabilities();
         options.addArguments("start-maximized");
