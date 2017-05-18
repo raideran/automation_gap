@@ -25,4 +25,19 @@ public class SearchPage
         this.driver = driver;
 
     }
+
+
+    public String getPageTitle()
+    {
+        return  this.driver.getTitle();
+    }
+
+    public Boolean isPageLoaded(String Title)
+    {
+        if(getPageTitle().equals(Title))
+            return  true;
+        else
+            return false;
+
+    }
 }
