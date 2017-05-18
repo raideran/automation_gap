@@ -1,11 +1,13 @@
 package com.gap.atpractice.testSuites;
 import com.gap.atpractice.Utils.TakeScreenshot;
 import com.gap.atpractice.pageobject.HomePage;
+import com.gap.atpractice.pageobject.SearchPage;
 import com.gap.atpractice.selenium.SeleniumBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,8 +38,17 @@ public class LoginTest
                 System.out.println("HomePage Not Correctly Loaded");
                 //System.exit(0);
             }
-            hPage.searchText("network");
+            SearchPage sPage = hPage.searchText("network");
 
+            if(!sPage.isPageLoaded("Search"))
+            {
+                System.out.println("SearchPage Not Correctly Loaded");
+                //System.exit(0);
+            }
+
+            sPage.pageValidations();
+            TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
+            driver.quit();
 
 
             /*driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -50,7 +61,7 @@ public class LoginTest
             Thread.sleep(5000);  // Let the user actually see something!
             */
 
-
+            /*
             JavascriptExecutor js = (JavascriptExecutor) driver;
             searchBoxInput = driver.findElement(By.id("searchBoxInput"));
             js.executeScript("arguments[0].click();", searchBoxInput);
@@ -64,17 +75,21 @@ public class LoginTest
             tabEverything = driver.findElement(By.xpath("//li/a[text()=\"Everything\"]"));
 
 
+
+
             if(!driver.findElement(By.cssSelector(".NextPage")).isDisplayed())
                 System.out.println("Next Page link is not present");
 
             if(!driver.findElement(By.cssSelector(".downloadBtn")).isDisplayed())
                 System.out.println("Download Button is not present");
-
-            //TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
-
+            */
 
 
-            driver.quit();
+
+
+
+
+
 
 
         }
