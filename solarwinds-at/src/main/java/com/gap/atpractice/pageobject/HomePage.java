@@ -1,5 +1,6 @@
 package com.gap.atpractice.pageobject;
 
+import com.gap.atpractice.botstyletest.BotStyle;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class HomePage
 {
     WebDriver driver;
+    BotStyle botDriver;
     /*PO without Factory
     By bySearchText= By.id("SearchText");
     By bySearchButton = By.xpath("//button[@class='btn btn-warning btn-sm']");
@@ -28,6 +30,7 @@ public class HomePage
     public HomePage(WebDriver driver)
     {
         this.driver = driver;
+        botDriver = new BotStyle(driver);
         PageFactory.initElements(driver,this);
 
     }
@@ -59,7 +62,7 @@ public class HomePage
         searchText = driver.findElement(bySearchText);
         searchButton = driver.findElement(bySearchButton);
         */
-        searchText.sendKeys("network");
+        botDriver.Type(searchText,"network");
         searchButton.click();
         return new SearchPage(this.driver);
     }
