@@ -1,6 +1,9 @@
 package com.gap.atpractice.Utils;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -19,7 +22,9 @@ public class TakeScreenshot
 
         try
         {
-            FileUtils.copyFile(src, new File(path));
+            DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy h-m-s");
+            Date date = new Date();
+            FileUtils.copyFile(src, new File(path + "_" + dateFormat.format(date) + ".jpg"));
         }
         catch (IOException e)
         {

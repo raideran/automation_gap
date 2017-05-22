@@ -18,10 +18,10 @@ public class LoginTest
 {
     private static SeleniumBase seleniumBase;
     //Home page elements
-    private static WebElement searchText, searchButton;
+    //private static WebElement searchText, searchButton;
     //Search page elements
-    private static WebElement searchBoxInput, tabProduct, tabDocument, tabResource, tabEverything,
-    downloadButton, nextLink;
+    // private static WebElement searchBoxInput, tabProduct, tabDocument, tabResource, tabEverything,
+    //downloadButton, nextLink;
 
     public static void main(String [] args){
 

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.LoadableComponent;
 
 import java.sql.Time;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by auto on 15/05/17.
  */
-public class HomePage
+public class HomePage extends LoadableComponent<HomePage>
 {
     WebDriver driver;
     BotStyle botDriver;
@@ -33,6 +34,12 @@ public class HomePage
         botDriver = new BotStyle(driver);
         PageFactory.initElements(driver,this);
 
+    }
+
+    @Override
+    protected void load()
+    {
+        driver.navigate().to(url);
     }
 
     public String getPageTitle()
