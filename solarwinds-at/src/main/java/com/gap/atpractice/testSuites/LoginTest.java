@@ -30,14 +30,14 @@ public class LoginTest
 
         try
         {
-            HomePage hPage = new HomePage(driver);
+            HomePage hPage = new HomePage(driver).get();
 
-            hPage.gotoHomePage("http://www.solarwinds.com/");
+            /*hPage.gotoHomePage("http://www.solarwinds.com/");
             if(!hPage.isPageLoaded("IT Management Software & Monitoring Tools | SolarWinds"))
             {
                 System.out.println("HomePage Not Correctly Loaded");
                 //System.exit(0);
-            }
+            }*/
             SearchPage sPage = hPage.searchText("network");
 
             if(!sPage.isPageLoaded("Search"))
