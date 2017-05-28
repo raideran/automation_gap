@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class CapabilitiesTest
 {
-    private static SeleniumBase seleniumBase;
+   /* private static SeleniumBase seleniumBase;
 
     public static void main(String [] args)
     {
@@ -18,5 +18,5 @@ public class CapabilitiesTest
         //WebDriver driver = seleniumBase.setup("InternetExplorer");
 
     }
-
+*/
 }

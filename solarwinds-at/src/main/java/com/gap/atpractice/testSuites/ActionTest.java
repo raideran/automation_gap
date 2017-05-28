@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ActionTest
 {
+    /*quitar
     private static SeleniumBase seleniumBase;
     //Home page elements
     private static WebElement searchText, searchButton;
@@ -37,6 +38,9 @@ public class ActionTest
             Thread.sleep(5000);  // Let the user actually see something!
             searchText.sendKeys("network");
             searchButton.click();*/
+
+
+    /*quitar
             Thread.sleep(5000);  // Let the user actually see something!
 
 
@@ -50,5 +54,6 @@ public class ActionTest
             e.printStackTrace();
         }
 
-    }
+
+    }quitar*/
 }
