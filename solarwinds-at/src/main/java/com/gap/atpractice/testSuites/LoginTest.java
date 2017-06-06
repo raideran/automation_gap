@@ -1,44 +1,45 @@
 package com.gap.atpractice.testSuites;
 import com.gap.atpractice.Utils.TakeScreenshot;
+import com.gap.atpractice.dataprovider.DataProviderClass;
 import com.gap.atpractice.pageobject.HomePage;
 import com.gap.atpractice.pageobject.SearchPage;
 import com.gap.atpractice.selenium.SeleniumBase;
-import org.openqa.selenium.By;
+import java.lang.String;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by auto on 06/04/17.
  */
-public class LoginTest
+public class LoginTest extends TestBase
 {
-    private static SeleniumBase seleniumBase;
-    //Home page elements
-    //private static WebElement searchText, searchButton;
-    //Search page elements
-    // private static WebElement searchBoxInput, tabProduct, tabDocument, tabResource, tabEverything,
-    //downloadButton, nextLink;
+    /*private static SeleniumBase seleniumBase;
+    private static WebDriver driver;*/
 
-    public static void main(String [] args){
 
+    /*@BeforeClass(groups = {"smoke"})
+    @Parameters({"browser"})
+    private static void initTest(String browser)
+    {
         seleniumBase = new SeleniumBase();
-        WebDriver driver = seleniumBase.setup("Chrome");
+        driver = seleniumBase.setup(browser);
+    }*/
+
+
+    @Test(groups = {"smoke"})
+    @Parameters({"searchText"})
+    public void loginTest(String searchText)
+    {
 
         try
         {
-            HomePage hPage = new HomePage(driver).get();
-
-            /*hPage.gotoHomePage("http://www.solarwinds.com/");
-            if(!hPage.isPageLoaded("IT Management Software & Monitoring Tools | SolarWinds"))
-            {
-                System.out.println("HomePage Not Correctly Loaded");
-                //System.exit(0);
-            }*/
-            SearchPage sPage = hPage.searchText("network");
+            //initTest("Chrome");
+            HomePage hPage = (HomePage)new HomePage(driver).get();
+            SearchPage sPage = hPage.searchText(searchText);
 
             if(!sPage.isPageLoaded("Search"))
             {
@@ -47,50 +48,33 @@ public class LoginTest
             }
 
             sPage.pageValidations();
+            //TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
+            //driver.quit();
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Test(groups = "dataprovider", dataProvider = "getSearchData", dataProviderClass = DataProviderClass.class)
+    public void searchTest(String dato, String searchText)
+    {
+
+        try
+        {
+            //initTest("Chrome");
+            HomePage hPage = (HomePage)new HomePage(driver).get();
+            SearchPage sPage = hPage.searchText(searchText);
+
+            if(!sPage.isPageLoaded("Search"))
+            {
+                System.out.println("SearchPage Not Correctly Loaded");
+            }
+
+            Assert.assertTrue(sPage.pageValidations(),"Search page didn't load correctly some component");
             TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots");
-            driver.quit();
-
-
-            /*driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.get("http://www.solarwinds.com/");
-            searchButton = driver.findElement(By.xpath("//button[@class='btn btn-warning btn-sm']"));
-            searchText = driver.findElement(By.id("SearchText"));
-            Thread.sleep(5000);  // Let the user actually see something!
-            searchText.sendKeys("network");
-            searchButton.click();
-            Thread.sleep(5000);  // Let the user actually see something!
-            */
-
-            /*
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            searchBoxInput = driver.findElement(By.id("searchBoxInput"));
-            js.executeScript("arguments[0].click();", searchBoxInput);
-
-
-
-
-            tabProduct = driver.findElement(By.xpath("//li/a[text()=\"Products\"]"));
-            tabDocument  = driver.findElement(By.xpath("//li/a[text()=\"Documentation\"]"));
-            tabResource = driver.findElement(By.xpath("//li/a[text()=\"Resources\"]"));
-            tabEverything = driver.findElement(By.xpath("//li/a[text()=\"Everything\"]"));
-
-
-
-
-            if(!driver.findElement(By.cssSelector(".NextPage")).isDisplayed())
-                System.out.println("Next Page link is not present");
-
-            if(!driver.findElement(By.cssSelector(".downloadBtn")).isDisplayed())
-                System.out.println("Download Button is not present");
-            */
-
-
-
-
-
-
-
-
 
         }
         catch(Exception e)

@@ -6,21 +6,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 /**
  * Created by auto on 15/05/17.
  */
-public class SearchPage
+public class SearchPage extends PageBase
 {
-
-    WebDriver driver;
-    /*PO without Factory
-    By bySearchBoxInput = By.id("searchBoxInput");
-    By byTabProduct = By.xpath("//li/a[text()=\"Products\"]");
-    By byTabDocument  = By.xpath("//li/a[text()=\"Documentation\"]");
-    By byTabResource = By.xpath("//li/a[text()=\"Resources\"]");
-    By byTabEverything = By.xpath("//li/a[text()=\"Everything\"]");
-    */
 
     @FindBy(id = "searchBoxInput")
     private WebElement searchBoxInput;
@@ -33,17 +25,23 @@ public class SearchPage
     @FindBy(xpath = "//li/a[text()=\"Everything\"]")
     private WebElement tabEverything;
 
-    SearchPage(WebDriver driver)
+    public SearchPage(WebDriver driver)
     {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver,this);
 
     }
 
-
-    public String getPageTitle()
+    @Override
+    protected void load()
     {
-        return  this.driver.getTitle();
+        driver.navigate().to("http://www.solarwinds.com/");
+    }
+
+    @Override
+    protected void isLoaded() throws Error
+    {
+        Assert.assertTrue(isPageLoaded("Search"));
     }
 
     public Boolean isPageLoaded(String Title)
@@ -55,28 +53,29 @@ public class SearchPage
 
     }
 
-
-    public void pageValidations()
+    public boolean pageValidations()
     {
+        boolean validations = true;
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        //searchBoxInput = driver.findElement(bySearchBoxInput);
         js.executeScript("arguments[0].click();", searchBoxInput);
 
-        /*
-        tabProduct = driver.findElement(byTabProduct);
-        tabDocument  = driver.findElement(byTabDocument);
-        tabResource = driver.findElement(byTabResource);
-        tabEverything = driver.findElement(byTabEverything);
-        */
-
         if (tabProduct.getSize().equals(0))
+        {
             System.out.println("Product tab is not present in the page");
-
+            validations = false;
+        }
 
         if(!driver.findElement(By.cssSelector(".NextPage")).isDisplayed())
+        {
             System.out.println("Next Page link is not visible");
+            validations = false;
+        }
 
         if(!driver.findElement(By.cssSelector(".downloadBtn")).isDisplayed())
+        {
             System.out.println("Download Button is not visible");
+            validations = false;
+        }
+        return validations;
     }
 }
