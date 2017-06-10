@@ -1,1 +1,32 @@
-solarwinds-at/src/main/resources/screenshots
+# Compiled class file
+*.class
+
+# Screenshots Folder
+src/main/resources/screenshots
+
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+
+# inteliJ files
+*.iml
+
+
+#Other Files
+.idea/
+*.iml
+target/
+.DS_Store
+
+
+
+
