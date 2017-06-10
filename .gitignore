@@ -26,6 +26,11 @@ src/main/resources/screenshots
 *.iml
 target/
 .DS_Store
+Solarwinds-at.iml
+Solarwinds-at.ipr
+Solarwinds-at.iws
+Solarwinds-at.iws___jb_tmp___
+
 
 
 
