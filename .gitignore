@@ -3,6 +3,7 @@
 
 # Screenshots Folder
 src/main/resources/screenshots
+*.jpg
 
 
 # Log file
