@@ -7,25 +7,42 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
 /**
- * Created by auto on 05/06/17.
+ * Created by jporras on 05/06/17.
+ * This class contains all the common methods
+ * that the test cases will inherit
  */
 public class TestBase extends SeleniumBase
 {
 
-    protected WebDriver driver;
+    protected String testLinkURL;
+    protected String devKey;
 
+    /*
+     * This method will run before every testcase
+     * and will setup the browser driver
+     */
     @BeforeMethod(alwaysRun = true)
-    @Parameters({"browser"})
-    public void initSetup(String browser)
+    @Parameters({"browser","testlinkUrl", "devKey"})
+    public void initSetup(String browser, String testLinkURL, String devKey)
     {
-        driver = super.setup(browser);
+        driver = super.setup(browser,true);
+        this.testLinkURL = testLinkURL;
+        this.devKey = devKey;
     }
 
+    /*
+     * This method will run after every testcase
+     * and will shutdown the webdriver instance
+     */
     @AfterMethod(alwaysRun = true)
     public void quitSetup()
     {
         driver.quit();
     }
 
+    public WebDriver getDriver()
+    {
+        return super.driver;
+    }
 
 }

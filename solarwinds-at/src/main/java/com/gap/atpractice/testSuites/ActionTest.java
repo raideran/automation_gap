@@ -1,59 +1,34 @@
 package com.gap.atpractice.testSuites;
-import com.gap.atpractice.Utils.TakeScreenshot;
-import com.gap.atpractice.selenium.SeleniumBase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
+
+import com.gap.atpractice.pageobject.ActionPage;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import javax.swing.*;
 
 /**
- * Created by auto on 04/05/17.
+ * Created by jporras on 04/05/17.
  */
-public class ActionTest
+public class ActionTest extends TestBase
 {
-    /*quitar
-    private static SeleniumBase seleniumBase;
-    //Home page elements
-    private static WebElement searchText, searchButton;
-    //Search page elements
-    private static WebElement searchBoxInput, tabProduct, tabDocument, tabResource, tabEverything,
-            downloadButton, nextLink;
-
-    public static void main(String [] args){
-
-        seleniumBase = new SeleniumBase();
-        WebDriver driver = seleniumBase.setup("Chrome");
-        String url = new File("src/main/resources/html/index.html").getAbsolutePath();
+    @Test(groups = {"smoke"})
+    public void validateActions()
+    {
+        Boolean result;
         try
         {
-
-
-            //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.get(url);
-            /*searchButton = driver.findElement(By.xpath("//button[@id=\"SubmitButton\"]"));
-            searchText = driver.findElement(By.id("SearchText"));
-            Thread.sleep(5000);  // Let the user actually see something!
-            searchText.sendKeys("network");
-            searchButton.click();*/
-
-
-    /*quitar
-            Thread.sleep(5000);  // Let the user actually see something!
-
-
-
-            driver.quit();
-
-
+            ActionPage actionPage = (ActionPage)new ActionPage(driver).get();
+            result = actionPage.doubleClickElement();
+            result = actionPage.mouseHover();
+            result = actionPage.dragAndTextArea();
+            Assert.assertTrue(result);
         }
-        catch (InterruptedException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }
 
 
-    }quitar*/
+    }
 }

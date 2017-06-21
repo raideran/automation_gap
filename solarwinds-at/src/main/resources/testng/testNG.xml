@@ -3,29 +3,70 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Suite">
+    <listeners>
+        <listener class-name="com.gap.atpractice.testlistener.Listener"/>
+    </listeners>
+    <test name="smokeSimple">
 
-    <test name="test1">
+        <parameter name="browser" value="Chrome"/>
+        <parameter name="homeURL" value="URL" />
+        <parameter name="searchText" value="network"/>
+
+        <!--TestLink Parameters-->
+        <parameter name="testlinkUrl" value="https://testlink.wearegap.com/lib/api/xmlrpc/v1/xmlrpc.php"/>
+        <parameter name="devKey" value="884629f1c2783be610dbb867eb28676e"/>
+        <!--TestLink Project Parameters-->
+        <parameter name="projectName" value="Automation Practice - Training"/>
+        <parameter name="projectPrefix" value="AT-"/>
+        <parameter name="projectNotes" value="Project Notes"/>
+        <parameter name="projectEnableRequirements" value="true"/>
+        <parameter name="projectEnableTestPriority" value="true"/>
+        <parameter name="projectEnableAutomation" value="true"/>
+        <parameter name="projectEnableInventory" value="true"/>
+        <parameter name="projectIsActive" value="true"/>
+        <parameter name="projectIsPublic" value="true"/>
+        <!--TestLink Plan Parameters-->
+        <parameter name="testPlanName" value="Test Plan Jose"/>
+        <parameter name="testPlanNotes" value="Test Plan Notes"/>
+        <parameter name="testPlanIsActive" value="true"/>
+        <parameter name="testPlanIsPublic" value="true"/>
+        <!--TestLink Build Parameters-->
+        <parameter name="testBuildName" value="Build Jose"/>
+        <parameter name="testBuildNotes" value="Test Build Notes"/>
+
+
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <include name="dataprovider"/>
+                <exclude name="testLink"/>
+
+            </run>
+        </groups>
+
+        <classes>
+            <class name="com.gap.atpractice.testSuites.SearchTest"/>
+            <class name="com.gap.atpractice.testSuites.TestLinkTest"/>
+            <class name="com.gap.atpractice.testSuites.ActionTest"/>
+
+        </classes>
+
+    </test>
+
+    <test name="smokeFactory">
 
         <parameter name="browser" value="Chrome"/>
         <parameter name="homeURL" value="URL" />
         <parameter name="searchText" value="network"/>
 
         <groups>
-
             <run>
-
-                <!--include name="smoke"/-->
-                <include name="dataprovider"/>
-
-
+                <include name="smokeFactory"/>
             </run>
-
         </groups>
 
         <classes>
-
-            <class name="com.gap.atpractice.testSuites.LoginTest" />
-
+            <class name="com.gap.atpractice.testngfactory.TestFactory"/>
         </classes>
 
     </test>
