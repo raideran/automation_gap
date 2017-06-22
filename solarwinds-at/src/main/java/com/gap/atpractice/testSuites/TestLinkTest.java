@@ -51,7 +51,7 @@ public class TestLinkTest extends TestBase
      * @param testBuildName String: Build Name
      * @param testBuildNotes String: Build Notes
      */
-    @Test(groups = "testLink")
+    @Test(groups = "testLink", enabled = false)
     @Parameters({"projectName","testPlanName","testBuildName","testBuildNotes"})
     public void testLinkBuild(String projectName,String testPlanName,String testBuildName,String testBuildNotes)
     {
@@ -60,6 +60,24 @@ public class TestLinkTest extends TestBase
             TestLink testLink = new TestLink(super.testLinkURL, super.devKey);
             Build build = testLink.createTestLinkBuild(testPlanName,projectName,testBuildName,testBuildNotes);
             Assert.assertEquals(build.getName(),testBuildName);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Test(groups = "testLink")
+    @Parameters({"projectName","testPlanName","SearchTextTCID"})
+    public void testLinkAddTestCaseToPlan(String projectName, String testPlanName, Integer searchTextTCID)
+    {
+        try
+        {
+            Integer expectedStatus = 2346;
+            TestLink testLink = new TestLink(super.testLinkURL, super.devKey);
+            Integer addStatus = testLink.addTestLinkTestCasesToTestPlan(searchTextTCID, projectName, testPlanName, 1, 1, 1);
+            Assert.assertEquals(addStatus,expectedStatus);
+
         }
         catch (Exception e)
         {

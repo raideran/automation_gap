@@ -12,7 +12,7 @@ import javax.swing.*;
  */
 public class ActionTest extends TestBase
 {
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke"}, enabled = false)
     public void validateActions()
     {
         Boolean result;

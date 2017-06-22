@@ -45,4 +45,14 @@ public class TestBase extends SeleniumBase
         return super.driver;
     }
 
+
+    public String getDevKey()
+    {
+        return devKey;
+    }
+
+    public String getTestLinkURL()
+    {
+        return testLinkURL;
+    }
 }

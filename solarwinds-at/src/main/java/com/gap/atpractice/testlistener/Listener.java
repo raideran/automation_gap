@@ -1,11 +1,16 @@
 package com.gap.atpractice.testlistener;
 
+import br.eti.kinoshita.testlinkjavaapi.constants.ExecutionStatus;
 import com.gap.atpractice.Utils.TakeScreenshot;
+import com.gap.atpractice.testSuites.SearchTest;
 import com.gap.atpractice.testSuites.TestBase;
+import com.gap.atpractice.testlinktest.TestLink;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.net.MalformedURLException;
 /**
  * Created by jporras on 19/06/17.
  */
@@ -28,7 +33,25 @@ public class Listener implements ITestListener
      */
     public void onTestSuccess(ITestResult result)
     {
-        printStatus(result);
+        try
+        {
+            printStatus(result);
+            SearchTest searchTest = (SearchTest) (result.getInstance());
+            TestLink testLink = new TestLink(searchTest.getTestLinkURL(),searchTest.getDevKey());
+            Integer planId = testLink.getTestLinkPlanByName(searchTest.getTestPlanName(),searchTest.getProjectName()).getId();
+            Integer buildId=testLink.getBuildID(planId, searchTest.getTestBuildName());
+            String note = "TestCase" + searchTest.getTcId() + "Ran Successfully";
+            testLink.updateTestCaseRunStatus(searchTest.getTcId(), null, planId ,
+                                             ExecutionStatus.PASSED, buildId , searchTest.getTestBuildName(),
+                                             note, true, null, null, null,
+                                             null, true);
+
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     /*

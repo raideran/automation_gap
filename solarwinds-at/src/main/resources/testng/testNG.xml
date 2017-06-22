@@ -34,11 +34,13 @@
         <parameter name="testBuildName" value="Build Jose"/>
         <parameter name="testBuildNotes" value="Test Build Notes"/>
 
+        <!--Test Cases ID-->
+        <parameter name="SearchTextTCID" value="22486"/>
 
         <groups>
             <run>
                 <include name="smoke"/>
-                <include name="dataprovider"/>
+                <exclude name="dataprovider"/>
                 <exclude name="testLink"/>
 
             </run>
