@@ -51,6 +51,9 @@ public class SeleniumBase
 
     public void initFirefox()
     {
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Mozilla Firefox\\geckodriver.exe");
+        capabilities.setCapability("marionette", true);
         driver = new FirefoxDriver();
     }
 

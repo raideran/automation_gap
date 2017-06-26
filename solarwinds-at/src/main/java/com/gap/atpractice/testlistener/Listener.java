@@ -2,7 +2,6 @@ package com.gap.atpractice.testlistener;
 
 import br.eti.kinoshita.testlinkjavaapi.constants.ExecutionStatus;
 import com.gap.atpractice.Utils.TakeScreenshot;
-import com.gap.atpractice.testSuites.SearchTest;
 import com.gap.atpractice.testSuites.TestBase;
 import com.gap.atpractice.testlinktest.TestLink;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +23,36 @@ public class Listener implements ITestListener
 
     public void onTestStart(ITestResult result)
     {
-
+        TestBase base = (TestBase) (result.getInstance());
+        Integer addStatus;
+        try
+        {
+            if (base.getAddTestCasesToPlan()) {
+                TestLink testLink = new TestLink(base.getTestLinkURL(), base.getDevKey());
+                try
+                {
+                    addStatus = testLink.addTestLinkTestCasesToTestPlan(base.getTcId(), base.getProjectName(), base.getTestPlanName(), 1, 1, 1);
+                }
+                catch(Exception e)
+                {
+                    addStatus = 333;
+                }
+                switch (addStatus) {
+                    case 2346: //Correctly Added Status
+                        System.out.println("Test Case: " + base.getTcId() + "correctly added to Test Plan: " + base.getTestPlanName());
+                        break;
+                    case 333:
+                        System.out.println("Test Case: " + base.getTcId() + "already exists in Test Plan: " + base.getTestPlanName());
+                        break;
+                    default:
+                        System.out.println("Unknown Status was retrieved when trying to add the Test Case:" + base.getTcId() + "to the Test Plan: " + base.getTestPlanName());
+                }
+            }
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -36,13 +64,13 @@ public class Listener implements ITestListener
         try
         {
             printStatus(result);
-            SearchTest searchTest = (SearchTest) (result.getInstance());
-            TestLink testLink = new TestLink(searchTest.getTestLinkURL(),searchTest.getDevKey());
-            Integer planId = testLink.getTestLinkPlanByName(searchTest.getTestPlanName(),searchTest.getProjectName()).getId();
-            Integer buildId=testLink.getBuildID(planId, searchTest.getTestBuildName());
-            String note = "TestCase" + searchTest.getTcId() + "Ran Successfully";
-            testLink.updateTestCaseRunStatus(searchTest.getTcId(), null, planId ,
-                                             ExecutionStatus.PASSED, buildId , searchTest.getTestBuildName(),
+            TestBase base = (TestBase) (result.getInstance());
+            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
+            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
+            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
+            String note = "TestCase" + base.getTcId() + " Ran Successfully";
+            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
+                                             ExecutionStatus.PASSED, buildId , base.getTestBuildName(),
                                              note, true, null, null, null,
                                              null, true);
 
@@ -61,8 +89,24 @@ public class Listener implements ITestListener
     public void onTestFailure(ITestResult result)
     {
         printStatus(result);
-        WebDriver driver = ((TestBase)(result.getInstance())).getDriver();
-        TakeScreenshot.takeScreenshot(driver,"./src/main/resources/screenshots/");
+        TestBase base = (TestBase) (result.getInstance());
+        TakeScreenshot.takeScreenshot(base.getDriver(),"./src/main/resources/screenshots/");
+        try
+        {
+            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
+            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
+            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
+            String note = "TestCase" + base.getTcId() + " Failed";
+            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
+                    ExecutionStatus.FAILED, buildId , base.getTestBuildName(),
+                    note, true, null, null, null,
+                    null, true);
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     /*
@@ -72,6 +116,22 @@ public class Listener implements ITestListener
     public void onTestSkipped(ITestResult result)
     {
         printStatus(result);
+        try
+        {
+            TestBase base = (TestBase) (result.getInstance());
+            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
+            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
+            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
+            String note = "TestCase" + base.getTcId() + " Failed";
+            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
+                    ExecutionStatus.NOT_RUN, buildId , base.getTestBuildName(),
+                    note, true, null, null, null,
+                    null, true);
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

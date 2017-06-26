@@ -6,6 +6,8 @@ import com.gap.atpractice.pageobject.SearchPage;
 import java.lang.String;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -19,19 +21,20 @@ import org.testng.annotations.Test;
 public class SearchTest extends TestBase
 {
 
-    private Integer tcID;
-    private String projectName;
-    private String testPlanName;
-    private String testBuildName;
+
+    @BeforeMethod(alwaysRun = true)
+    @Parameters({"SearchTextTCID"})
+    private void setTestCaseID(Integer tcID)
+    {
+        this.tcID = tcID;
+    }
+
 
     @Test(groups = {"smoke"})
-    @Parameters({"searchText", "SearchTextTCID", "projectName", "testPlanName", "testBuildName"})
-    public void searchTest(String searchText, Integer tcID, String projectName, String testPlanName, String testBuildName) {
+    @Parameters({"searchText"})
+    public void searchTest(String searchText)
+    {
         try {
-            this.projectName = projectName;
-            this.tcID = tcID;
-            this.testPlanName = testPlanName;
-            this.testBuildName = testBuildName;
             HomePage hPage = (HomePage) new HomePage(driver).get();
             SearchPage sPage = hPage.searchText(searchText);
             Assert.assertTrue(sPage.isPageLoaded("Search"), "SearchPage was not correctly loaded");
@@ -58,22 +61,8 @@ public class SearchTest extends TestBase
         }
     }
 
-    public Integer getTcId() {
-        return tcID;
-    }
 
-    public String getProjectName() {
-        return projectName;
-    }
 
-    public String getTestPlanName()
-    {
-        return testPlanName;
-    }
 
-    public String getTestBuildName()
-    {
-        return testBuildName;
-    }
 }
 
