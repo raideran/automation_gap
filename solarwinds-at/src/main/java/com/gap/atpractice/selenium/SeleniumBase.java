@@ -1,5 +1,6 @@
 package com.gap.atpractice.selenium;
 
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -36,17 +37,23 @@ public class SeleniumBase
         return driver;
     }
 
-    private void initChrome(boolean capabilities)
+    private void initChrome(boolean enableCapabilities)
     {
-        if(capabilities) {
-            //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        if(enableCapabilities)
+        {
             ChromeOptions options = new ChromeOptions();
-            DesiredCapabilities capa = new DesiredCapabilities();
             options.addArguments("start-maximized");
-            //capa.
-            //driver
+            //options.addArguments("-incognito");
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+            driver = new ChromeDriver(capabilities);
         }
-        driver = new ChromeDriver();
+        else
+        {
+            driver = new ChromeDriver();
+        }
+
     }
 
     public void initFirefox()
@@ -59,6 +66,7 @@ public class SeleniumBase
 
     public void initInternetExplorer()
     {
+        DesiredCapabilities capa = new DesiredCapabilities();
         driver = new InternetExplorerDriver();
     }
 }

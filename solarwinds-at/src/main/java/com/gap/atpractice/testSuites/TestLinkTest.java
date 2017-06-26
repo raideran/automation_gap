@@ -75,7 +75,7 @@ public class TestLinkTest extends TestBase
         {
             Integer expectedStatus = 2346;
             TestLink testLink = new TestLink(super.testLinkURL, super.devKey);
-            Integer addStatus = testLink.addTestLinkTestCasesToTestPlan(searchTextTCID, projectName, testPlanName, 1, 1, 1);
+            Integer addStatus = testLink.addTestLinkTestCasesToTestPlan(searchTextTCID, projectName, testPlanName, 1, 1, 1, "test");
             Assert.assertEquals(addStatus,expectedStatus);
 
         }

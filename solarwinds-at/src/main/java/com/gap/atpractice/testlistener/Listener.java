@@ -27,25 +27,31 @@ public class Listener implements ITestListener
         Integer addStatus;
         try
         {
-            if (base.getAddTestCasesToPlan()) {
+            if (base.getAddTestCasesToPlan())
+            {
                 TestLink testLink = new TestLink(base.getTestLinkURL(), base.getDevKey());
                 try
                 {
-                    addStatus = testLink.addTestLinkTestCasesToTestPlan(base.getTcId(), base.getProjectName(), base.getTestPlanName(), 1, 1, 1);
+                    addStatus = testLink.addTestLinkTestCasesToTestPlan(base.getTcId(), base.getProjectName(), base.getTestPlanName(), 1, 1, 1, base.getTestBuildName());
                 }
                 catch(Exception e)
                 {
-                    addStatus = 333;
+                    addStatus = -2;
+                    e.printStackTrace();
                 }
-                switch (addStatus) {
-                    case 2346: //Correctly Added Status
-                        System.out.println("Test Case: " + base.getTcId() + "correctly added to Test Plan: " + base.getTestPlanName());
+                switch(addStatus)
+                {
+                    case 0: //Correctly Added Status
+                        System.out.println("Test Case: " + base.getTcId() + " correctly added to Test Plan: " + base.getTestPlanName());
                         break;
-                    case 333:
-                        System.out.println("Test Case: " + base.getTcId() + "already exists in Test Plan: " + base.getTestPlanName());
+                    case -2:
+                        System.out.println("An exception was thrown while trying to add Test Case:" + base.getTcId() + " to the Test Plan: " + base.getTestPlanName());
+                        break;
+                    case -1: //Correctly Added Status
+                        System.out.println("Test Case: " + base.getTcId() + " already exists in Test Plan: " + base.getTestPlanName());
                         break;
                     default:
-                        System.out.println("Unknown Status was retrieved when trying to add the Test Case:" + base.getTcId() + "to the Test Plan: " + base.getTestPlanName());
+                        System.out.println("Unknown Status was retrieved when trying to add the Test Case:" + base.getTcId() + " to the Test Plan: " + base.getTestPlanName());
                 }
             }
         }
@@ -57,81 +63,36 @@ public class Listener implements ITestListener
 
     /*
      *This Method will be triggered if the Test finished successfully
-     *It will print the summary of the test in the printStatus method
+     *It will print the summary of the test in the printTestCaseSummary method
      */
     public void onTestSuccess(ITestResult result)
     {
-        try
-        {
-            printStatus(result);
-            TestBase base = (TestBase) (result.getInstance());
-            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
-            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
-            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
-            String note = "TestCase" + base.getTcId() + " Ran Successfully";
-            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
-                                             ExecutionStatus.PASSED, buildId , base.getTestBuildName(),
-                                             note, true, null, null, null,
-                                             null, true);
-
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
+        printTestCaseSummary(result);
+        updateRunStatus(result);
 
     }
 
     /*
      *This method will be triggered if the test fails
-     *It will print the summary of the test in the printStatus method
+     *It will print the summary of the test in the printTestCaseSummary method
      */
     public void onTestFailure(ITestResult result)
     {
-        printStatus(result);
+        printTestCaseSummary(result);
         TestBase base = (TestBase) (result.getInstance());
         TakeScreenshot.takeScreenshot(base.getDriver(),"./src/main/resources/screenshots/");
-        try
-        {
-            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
-            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
-            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
-            String note = "TestCase" + base.getTcId() + " Failed";
-            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
-                    ExecutionStatus.FAILED, buildId , base.getTestBuildName(),
-                    note, true, null, null, null,
-                    null, true);
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
+        updateRunStatus(result);
 
     }
 
     /*
      *This method will be triggered if the test is skipped
-     *It will print the summary of the test in the printStatus method
+     *It will print the summary of the test in the printTestCaseSummary method
      */
     public void onTestSkipped(ITestResult result)
     {
-        printStatus(result);
-        try
-        {
-            TestBase base = (TestBase) (result.getInstance());
-            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
-            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
-            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
-            String note = "TestCase" + base.getTcId() + " Failed";
-            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
-                    ExecutionStatus.NOT_RUN, buildId , base.getTestBuildName(),
-                    note, true, null, null, null,
-                    null, true);
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
+        printTestCaseSummary(result);
+        updateRunStatus(result);
     }
 
 
@@ -162,38 +123,85 @@ public class Listener implements ITestListener
     /**
      * This method will print the summary of the test result,
      */
-    private void printStatus(ITestResult result)
+    private void printTestCaseSummary(ITestResult result)
 {
-    System.out.println("*****************************************************");
-    System.out.println("SUMMARY");
-    System.out.println("*****************************************************");
-    System.out.println("|-- Test Class: ".concat(result.getInstanceName()));
-    System.out.println("|-- Method: ".concat(result.getName()));
-    Long runningDuration = result.getEndMillis()-result.getStartMillis();
-    System.out.println("|-- Execution Time: ".concat(runningDuration.toString()));
-    System.out.println("|-- Status: ".concat(getStatus(result.getStatus())));
-    System.out.println("*****************************************************");
-    System.out.println("");
-    System.out.println("");
+    System.out.println("*******************************************************************************");
+    System.out.println("*------------------------------------SUMMARY----------------------------------*");
+    System.out.println("*******************************************************************************");
+    System.out.println("||-- Test Class: ".concat(result.getInstanceName()));
+    System.out.println("||-- Test Name: ".concat(result.getName()));
+    Long executionTime = (result.getEndMillis()-result.getStartMillis())/1000;
+    System.out.println("||-- Execution Time: ".concat(executionTime.toString())+ " seconds");
+    System.out.println("||-- Status: ".concat(getStatusName(result.getStatus())));
+    System.out.println("*******************************************************************************");
+
 }
 
     /*
      *This Method will convert the ITestResult status which is an integer
      *to the corresponding text
      */
-    private String getStatus(int status)
-{
-    switch (status)
+    private String getStatusName(Integer statusId)
     {
-        case ITestResult.SUCCESS:
-            return "PASSED";
-        case ITestResult.FAILURE:
-            return "FAILED";
-        case ITestResult.SKIP:
-            return "SKIPPED";
-        default:
-            return "RESULT CODE NOT RECOGNIZED";
+        String statusName;
+        switch (statusId)
+        {
+            case ITestResult.SUCCESS:
+                statusName = "PASSED";
+                break;
+            case ITestResult.FAILURE:
+                statusName = "FAILED";
+                break;
+            case ITestResult.SKIP:
+                statusName = "SKIPPED";
+                break;
+            default:
+                statusName = "TEST CASE STATUS NOT RECOGNIZED";
+                break;
+        }
+        return statusName;
     }
-}
+
+    private ExecutionStatus getExecutionStatus(Integer statusId)
+    {
+        ExecutionStatus executionStatus;
+        switch (statusId)
+        {
+            case ITestResult.SUCCESS:
+                executionStatus = ExecutionStatus.PASSED;
+                break;
+            case ITestResult.FAILURE:
+                executionStatus = ExecutionStatus.FAILED;
+                break;
+            case ITestResult.SKIP:
+                executionStatus = ExecutionStatus.BLOCKED;
+                break;
+            default:
+                executionStatus = ExecutionStatus.NOT_RUN;
+        }
+        return executionStatus;
+    }
+
+    private void updateRunStatus(ITestResult result)
+    {
+        try
+        {
+            TestBase base = (TestBase) (result.getInstance());
+            TestLink testLink = new TestLink(base.getTestLinkURL(),base.getDevKey());
+            Integer planId = testLink.getTestLinkPlanByName(base.getTestPlanName(),base.getProjectName()).getId();
+            Integer buildId=testLink.getBuildID(planId, base.getTestBuildName());
+            String note = "TestCase" + base.getTcId() + " " + getStatusName(result.getStatus());
+            testLink.updateTestCaseRunStatus(base.getTcId(), null, planId ,
+                    getExecutionStatus(result.getStatus()), buildId , base.getTestBuildName(),
+                    note, true, null, null, null,
+                    null, true);
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

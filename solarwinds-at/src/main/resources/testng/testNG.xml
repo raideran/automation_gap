@@ -35,11 +35,15 @@
     <parameter name="createBuild" value="false"/>
 
     <test name="smokeSimple">
-        <parameter name="browser" value="Firefox"/>
+        <parameter name="browser" value="Chrome"/>
         <parameter name="searchText" value="network"/>
+        <parameter name="firstName" value="Juan"/>
+        <parameter name="lastName" value="Soto"/>
+
 
         <!--Test Cases ID-->
         <parameter name="SearchTextTCID" value="22486"/>
+        <parameter name="FirstLastNameTCID" value="22593"/>
 
         <groups>
             <run>
@@ -54,6 +58,7 @@
             <class name="com.gap.atpractice.testSuites.SearchTest"/>
             <class name="com.gap.atpractice.testSuites.TestLinkTest"/>
             <class name="com.gap.atpractice.testSuites.ActionTest"/>
+            <class name="com.gap.atpractice.testSuites.FirstLastNameTest"/>
         </classes>
 
     </test>

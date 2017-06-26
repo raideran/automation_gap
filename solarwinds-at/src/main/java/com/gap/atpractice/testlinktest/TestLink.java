@@ -111,11 +111,23 @@ public class TestLink extends TestLinkAPI
         return this.addTestCaseToTestPlan(testProjectId, testPlanId, testCaseId, version, platformId, 0, urgency);
     }
 
-    public int addTestLinkTestCasesToTestPlan(Integer testCaseId,String projectName, String planName, Integer version, Integer platformId, Integer urgency)
+    public int addTestLinkTestCasesToTestPlan(Integer testCaseId,String projectName, String planName, Integer version, Integer platformId, Integer urgency, String buildName)
     {
         TestProject testProject = getTestProjectByName(projectName);
         TestPlan testPlan = getTestPlanByName(planName, projectName);
-        return this.addTestCaseToTestPlan(testProject.getId(), testPlan.getId(), testCaseId, version, platformId, 0, urgency);
+        Integer  buildId = getBuildID(testPlan.getId(),buildName);
+        int result;
+        if(TestCaseExistsInTestPlan(testPlan.getId(),buildId,testCaseId))
+        {
+            result = -1;
+        }
+        else
+        {
+            this.addTestCaseToTestPlan(testProject.getId(), testPlan.getId(), testCaseId, version, platformId, 0, urgency);
+            result = 0;
+        }
+        return result;
+
     }
 
 
@@ -172,6 +184,26 @@ public class TestLink extends TestLinkAPI
             }
         }
         return  buildId;
+    }
+
+
+    public Boolean TestCaseExistsInTestPlan(Integer testPlanId, Integer buildId, Integer testCaseId){
+        TestCase[] planTestCases = this.getTestCasesForTestPlan(testPlanId, null, buildId,
+                                                                null, null, null,
+                                                                 null, null, null,
+                                                                 null, null);
+        Boolean exists = false;
+
+        for (TestCase testCase : planTestCases)
+        {
+            if(testCase.getId().equals(testCaseId))
+            {
+                exists = true;
+                break;
+            }
+
+        }
+        return exists;
     }
 
 
