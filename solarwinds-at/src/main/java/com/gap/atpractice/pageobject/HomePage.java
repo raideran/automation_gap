@@ -39,6 +39,7 @@ public class HomePage extends PageBase
 
     public SearchPage searchText(String textToSearch)
     {
+        botDriver.waitForElementPresent(searchText,10);
         botDriver.type(searchText,textToSearch);
         searchButton.click();
         return new SearchPage(this.driver);

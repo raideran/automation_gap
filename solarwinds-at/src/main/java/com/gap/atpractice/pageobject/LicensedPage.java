@@ -29,9 +29,9 @@ public class LicensedPage extends PageBase
     @Override
     protected void load()
     {
-        driver.navigate().to(BASE_URL);
+        /*driver.navigate().to(BASE_URL);
         Cookie ck = new Cookie("AWS", "smart");
-        driver.manage().addCookie(ck);
+        driver.manage().addCookie(ck);*/
         driver.navigate().to(BASE_URL.concat(CURRENT_URL));
     }
 
