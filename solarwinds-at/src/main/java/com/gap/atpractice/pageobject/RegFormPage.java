@@ -5,17 +5,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by jporras on 6/26/2017.
  */
 public class RegFormPage extends PageBase
 {
-    @FindBy(xpath = "//input[@id='first_name']")
+    @FindBy(xpath = "//input[@id='ci_firstName']")
     private WebElement firsName;
-    @FindBy(xpath = "//input[@id='last_name']")
+    @FindBy(xpath = "//input[@id='ci_lastName']")
     private WebElement lasName;
 
-    private final String CURRENT_URL = "network-performance-monitor/registration?program=607&campaign=70150000000Dlbw";
+    private final String CURRENT_URL = "network-performance-monitor/registration";
 
     public RegFormPage(WebDriver driver)
     {
@@ -32,16 +34,16 @@ public class RegFormPage extends PageBase
     @Override
     protected void isLoaded() throws Error
     {
-        if(!isPageLoaded("Download a FREE Trial of Network Performance Monitor (NPM) from SolarWinds!"))
+        if(!isPageLoaded("Download a free trial of Network Performance Monitor from SolarWinds"))
         {
             throw new Error("Reg Form Page was not successfully loaded");
         }
     }
 
-    public Boolean verifyFirstLastNameFiels(String fName, String lName)
+    public Boolean verifyFirstLastNameFields(String fName, String lName)
     {
         Boolean result = false;
-        if(firsName.getText().equals(fName)&&lasName.getText().equals(lName))
+        if(firsName.getAttribute("value").equals(fName)&&lasName.getAttribute("value").equals(lName))
         {
             result = true;
         }

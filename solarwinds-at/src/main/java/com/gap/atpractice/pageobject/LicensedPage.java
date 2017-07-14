@@ -11,11 +11,11 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class LicensedPage extends PageBase
 {
-    @FindBy(xpath = "//input[@id='first_name']")
+    @FindBy(xpath = "//input[@id='CTAFirstName']")
     private WebElement firsName;
-    @FindBy(xpath = "//input[@id='last_name']")
+    @FindBy(xpath = "//input[@id='CTALastName']")
     private WebElement lasName;
-    @FindBy(xpath = "//button[@id='ProductHeroRegFormSubmit']")
+    @FindBy(xpath = "//div[@class=\"col-sm-8 form-fields\"]/a[@class=\"btnGreen solarTrack\"]")
     private WebElement downloadButtonn;
 
     private final String CURRENT_URL = "network-performance-monitor";
@@ -38,7 +38,7 @@ public class LicensedPage extends PageBase
     @Override
     protected void isLoaded() throws Error
     {
-        if(!isPageLoaded("Network Monitoring Software | SolarWinds NPM 12"))
+        if(!isPageLoaded("Network Monitoring Software | SolarWinds NPM 12.1"))
         {
             throw new Error("Licensed Page was not successfully loaded");
         }
