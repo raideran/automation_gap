@@ -21,15 +21,18 @@ public class FirstLastNameTest extends TestBase
 
     @Test(groups = {"smoke"})
     @Parameters({"firstName", "lastName"})
-    public void searchTest(String firstName, String lastName)
+    public void firstLastNameTest(String firstName, String lastName)
     {
-        try {
+        try
+        {
             LicensedPage hPage = (LicensedPage) new LicensedPage(driver).get();
             RegFormPage sPage = hPage.sendFirstLasNameData(firstName, lastName);
-            Assert.assertTrue(sPage.isPageLoaded("Download a FREE Trial of Network Performance Monitor (NPM) from SolarWinds!"), "SearchPage was not correctly loaded");
-            Assert.assertTrue(sPage.verifyFirstLastNameFiels(firstName,lastName), "Regform page didn't loaded correctly the firstname and Lastname fields");
-        } catch (Exception e) {
-            e.printStackTrace();
+            Assert.assertTrue(sPage.isPageLoaded("Download a free trial of Network Performance Monitor from SolarWinds"), "Regform page was not correctly loaded");
+            Assert.assertTrue(sPage.verifyFirstLastNameFields(firstName,lastName), "Regform page didn't loaded correctly the firstname and Lastname fields");
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
         }
     }
 

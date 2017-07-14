@@ -35,7 +35,7 @@
     <parameter name="createBuild" value="false"/>
 
     <test name="smokeSimple">
-        <parameter name="browser" value="Chrome"/>
+        <parameter name="browser" value="Firefox"/>
         <parameter name="searchText" value="network"/>
         <parameter name="firstName" value="Juan"/>
         <parameter name="lastName" value="Soto"/>

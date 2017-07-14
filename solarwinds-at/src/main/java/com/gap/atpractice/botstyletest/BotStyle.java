@@ -59,6 +59,13 @@ public class BotStyle
 
     }
 
+
+    public void waitForTextPresent(final WebElement element, int timeoutInSeconds, String text)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+    }
+
     public void type(WebElement wElement, String text)
     {
         wElement.clear();
